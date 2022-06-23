@@ -18,8 +18,9 @@ public class FoodGUI {
     private JRadioButton largeRadioButton;
     private JRadioButton normalRadioButton;
     private JRadioButton smallRadioButton;
-    private JButton button1;
-    private JButton vButton;
+    private JButton countUpButton;
+    private JButton countDownButton;
+    private JLabel countLabel;
     ButtonGroup buttonGroup;
 
     private ArrayList<Order> orderList = new ArrayList<>();
@@ -40,6 +41,18 @@ public class FoodGUI {
             @Override
             public void actionPerformed(ActionEvent e) {
 
+            }
+        });
+        countDownButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                countLabel.setText((Integer.parseInt(countLabel.getText())-1) + "");
+            }
+        });
+        countUpButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                countLabel.setText((Integer.parseInt(countLabel.getText())+1) + "");
             }
         });
 
@@ -150,6 +163,9 @@ public class FoodGUI {
             }else if(selectedSize.equals("Small")){
                 order.size = Size.Small;
             }
+
+            // apply count
+            order.count = Integer.parseInt(countLabel.getText());
 
             // add order to internal list
             orderList.add(order);

@@ -3,12 +3,13 @@ public class Order {
     int price;
     Size size;
     String category;
-    String pathToIcon;
+    String iconFileName;
 
-    Order(String name, int price, String category, String pathToIcon){
+    Order(String name, int price, String category, String iconFileName){
         this.name = name;
         this.price = price;
         this.category = category;
+        this.iconFileName = iconFileName;
         this.size = Size.Normal;
     }
 
@@ -19,6 +20,7 @@ public class Order {
                 ", price=" + price +
                 ", size=" + size +
                 ", category='" + category + '\'' +
+                ", iconFileName='" + iconFileName + '\'' +
                 '}';
     }
 }

@@ -26,10 +26,10 @@ public class Menu {
     /**
      * add order to menu
      * @param name order name
-     * @param pathToIcon icon image file path
+     * @param iconFileName icon image file path
      */
-    void addMenu(String name, int price, String category, String pathToIcon){
-        Order o = new Order(name, price, category, pathToIcon);
+    void addMenu(String name, int price, String category, String iconFileName){
+        Order o = new Order(name, price, category, iconFileName);
         orders.add(o);
     }
 

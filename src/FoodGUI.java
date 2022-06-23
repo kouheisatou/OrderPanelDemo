@@ -6,7 +6,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Objects;
-import java.util.function.Function;
 import java.util.function.UnaryOperator;
 
 public class FoodGUI {
@@ -16,6 +15,12 @@ public class FoodGUI {
     private JTabbedPane menuTab;
     private JLabel informationLabel;
     private JList orderJList;
+    private JRadioButton largeRadioButton;
+    private JRadioButton normalRadioButton;
+    private JRadioButton smallRadioButton;
+    private JButton button1;
+    private JButton vButton;
+    ButtonGroup buttonGroup;
 
     private ArrayList<Order> orderList = new ArrayList<>();
 
@@ -37,6 +42,16 @@ public class FoodGUI {
 
             }
         });
+
+        // init radio button
+        buttonGroup = new ButtonGroup();
+        largeRadioButton.setActionCommand("Large");
+        normalRadioButton.setActionCommand("Normal");
+        smallRadioButton.setActionCommand("Small");
+        buttonGroup.add(largeRadioButton);
+        buttonGroup.add(normalRadioButton);
+        buttonGroup.add(smallRadioButton);
+
 
         // on right-clicked in list
         orderJList.addMouseListener(new MouseAdapter() {
@@ -68,10 +83,10 @@ public class FoodGUI {
                         public ActionEvent apply(ActionEvent actionEvent) {
                             JPopupMenu sizeChangePopupMenu = new JPopupMenu();
 
-                            addMenuItemToPopupMenu(sizeChangePopupMenu, "small", new UnaryOperator<ActionEvent>() {
+                            addMenuItemToPopupMenu(sizeChangePopupMenu, "Large", new UnaryOperator<ActionEvent>() {
                                 @Override
                                 public ActionEvent apply(ActionEvent actionEvent) {
-                                    clickedOrder.size = Size.Small;
+                                    clickedOrder.size = Size.Large;
                                     updateOrderList();
                                     return null;
                                 }
@@ -86,10 +101,10 @@ public class FoodGUI {
                                 }
                             });
 
-                            addMenuItemToPopupMenu(sizeChangePopupMenu, "Large", new UnaryOperator<ActionEvent>() {
+                            addMenuItemToPopupMenu(sizeChangePopupMenu, "small", new UnaryOperator<ActionEvent>() {
                                 @Override
                                 public ActionEvent apply(ActionEvent actionEvent) {
-                                    clickedOrder.size = Size.Large;
+                                    clickedOrder.size = Size.Small;
                                     updateOrderList();
                                     return null;
                                 }
@@ -124,8 +139,22 @@ public class FoodGUI {
         );
 
         if(confirmation == 0){
+            Order order = food.clone();
+
+            // apply size
+            String selectedSize = buttonGroup.getSelection().getActionCommand();
+            if(selectedSize.equals("Large")){
+                order.size = Size.Large;
+            }else if(selectedSize.equals("Normal")){
+                order.size = Size.Normal;
+            }else if(selectedSize.equals("Small")){
+                order.size = Size.Small;
+            }
+
             // add order to internal list
-            orderList.add(food.clone());
+            orderList.add(order);
+
+            // update view
             updateOrderList();
 
             // update information

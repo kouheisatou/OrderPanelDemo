@@ -1,0 +1,3 @@
+Ramen,800,Food,Ramen.jpg
+Udon,600,Food,Udon.jpg
+Tea,300,Drink,Tea.jpg

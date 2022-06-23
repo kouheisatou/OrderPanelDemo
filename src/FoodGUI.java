@@ -104,6 +104,7 @@ public class FoodGUI {
                         @Override
                         public ActionEvent apply(ActionEvent actionEvent) {
                             clickedOrder.count = Integer.parseInt(countLabel.getText());
+                            updateOrderList();
                             return null;
                         }
                     });
@@ -248,6 +249,10 @@ public class FoodGUI {
             orders[i] = this.orderList.get(i).toString();
         }
         orderJList.setListData(orders);
+
+        // reset size and count
+        buttonGroup.setSelected(normalRadioButton.getModel(), true);
+        countLabel.setText("1");
     }
 
     void addMenuItemToPopupMenu(JPopupMenu popupMenu, String menuItemTitle, UnaryOperator<ActionEvent> onClick){

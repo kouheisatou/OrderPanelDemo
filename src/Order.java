@@ -1,12 +1,12 @@
 public class Order {
     String name;
-    int price;
+    int[] price;
     Size size;
     String category;
     String iconFileName;
     int count;
 
-    Order(String name, int price, String category, String iconFileName){
+    Order(String name, String category, String iconFileName, int[] price){
         this.name = name;
         this.price = price;
         this.category = category;
@@ -17,12 +17,25 @@ public class Order {
 
     @Override
     public String toString() {
-        return name + " ¥" + price + " (" + size + ") x " + count;
+        return name + " (" + size + ") ¥" + getCurrentPrice() + ") x " + count;
+    }
+
+    public int getCurrentPrice(){
+        int p = 0;
+        if(size == Size.Large){
+            p = price[2];
+        }else if(size == Size.Normal){
+            p = price[1];
+        }else if(size == Size.Small){
+            p = price[0];
+        }
+        return p;
     }
 
     public Order clone(){
-        Order newOrder = new Order(name, price, category, iconFileName);
-        newOrder.size = size;
-        return newOrder;
+        int[] copiedPrice = {price[0], price[1], price[2]};
+        Order copiedOrder = new Order(name, category, iconFileName, copiedPrice);
+        copiedOrder.size = size;
+        return copiedOrder;
     }
 }

@@ -21,10 +21,10 @@
           <grid row="6" column="2" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <text value="SEND ORDER"/>
+          <text value="CHECKOUT"/>
         </properties>
       </component>
-      <component id="c67d8" class="javax.swing.JLabel" binding="totalLabel">
+      <component id="c67d8" class="javax.swing.JLabel">
         <constraints>
           <grid row="5" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
@@ -32,7 +32,7 @@
           <text value="total    ¥"/>
         </properties>
       </component>
-      <component id="ec12b" class="javax.swing.JLabel">
+      <component id="ec12b" class="javax.swing.JLabel" binding="totalLabel">
         <constraints>
           <grid row="5" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>

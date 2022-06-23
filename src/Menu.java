@@ -24,7 +24,12 @@ public class Menu {
                 if(count == 0){
                     menuYSize = Integer.parseInt(element[0]);
                 }else{
-                    addMenu(element[0], Integer.parseInt(element[1]), element[2], element[3]);
+                    addMenu(
+                            element[0],
+                            element[1],
+                            element[2],
+                            new int[]{Integer.parseInt(element[3]), Integer.parseInt(element[4]), Integer.parseInt(element[5])}
+                    );
                 }
                 count ++;
             }
@@ -38,8 +43,8 @@ public class Menu {
      * @param name order name
      * @param iconFileName icon image file path
      */
-    void addMenu(String name, int price, String category, String iconFileName){
-        Order o = new Order(name, price, category, iconFileName);
+    void addMenu(String name, String category, String iconFileName, int[] price){
+        Order o = new Order(name, category, iconFileName, price);
         orders.add(o);
     }
 

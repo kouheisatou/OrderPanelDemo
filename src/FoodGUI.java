@@ -210,7 +210,6 @@ public class FoodGUI {
             // update information
             informationLabel.setText("Order for " + food.name + " received");
             JOptionPane.showMessageDialog(null, "Order for " + food.name + "received.");
-
         }
     }
 
@@ -240,7 +239,7 @@ public class FoodGUI {
         // add panel to button
         try{
             ImageIcon icon = new ImageIcon("resource/icon/" + order.iconFileName);
-            JButton button = new JButton(order.name + "(¥" + order.price + ")", icon);
+            JButton button = new JButton("<html><center>" + order.name + "<br>Small: ¥" + order.price[0] + "<br>Normal: ¥" + order.price[1] + "<br>Large: ¥" + order.price[2] + "</center></html>", icon);
             panel.add(button);
 
             // add action listener to button
@@ -257,8 +256,8 @@ public class FoodGUI {
 
     void updateOrderList(){
 
+        // update list view
         String orders[] = new String[this.orderList.size()];
-
         for(int i = 0; i < this.orderList.size(); i++){
             orders[i] = this.orderList.get(i).toString();
         }
@@ -267,6 +266,14 @@ public class FoodGUI {
         // reset size and count
         buttonGroup.setSelected(normalRadioButton.getModel(), true);
         countLabel.setText("1");
+
+        // update sum
+        int sum = 0;
+        for(int i = 0; i < orderList.size(); i++){
+            Order order = orderList.get(i);
+            sum += (order.getCurrentPrice() * order.count);
+        }
+        totalLabel.setText(sum + "");
     }
 
     void addMenuItemToPopupMenu(JPopupMenu popupMenu, String menuItemTitle, UnaryOperator<ActionEvent> onClick){

@@ -5,6 +5,11 @@ import java.io.FileReader;
 import java.util.ArrayList;
 
 public class Menu {
+
+    public static int menuXSize = 0;
+    public static int menuYSize = 0;
+
+
     ArrayList<Order> orders = new ArrayList<Order>();
 
     /**
@@ -12,11 +17,19 @@ public class Menu {
      * @param menuTextPath csv file that contains menu info
      */
     Menu(String menuTextPath){
+        int count = 0;
         try(BufferedReader br = new BufferedReader(new FileReader(menuTextPath))){
             String line;
             while((line = br.readLine()) != null){
+
                 String element[] = line.split(",");
-                addMenu(element[0], Integer.parseInt(element[1]), element[2], element[3]);
+                if(count == 0){
+                    menuXSize = Integer.parseInt(element[0]);
+                    menuYSize = Integer.parseInt(element[1]);
+                }else{
+                    addMenu(element[0], Integer.parseInt(element[1]), element[2], element[3]);
+                }
+                count ++;
             }
         }catch (Exception e){
             e.printStackTrace();

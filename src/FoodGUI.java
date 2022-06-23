@@ -18,8 +18,6 @@ public class FoodGUI {
     private JList orderJList;
 
     private ArrayList<Order> orderList = new ArrayList<>();
-    int menuXSize = 2;
-    int menuYSize = 2;
 
     public FoodGUI() {
 
@@ -149,7 +147,7 @@ public class FoodGUI {
         // if category tab is not exist, gen new tab
         if(tabIndex == -1){
             panel = new JPanel();
-            panel.setLayout(new GridLayout(menuXSize, menuYSize));
+            panel.setLayout(new GridLayout(Menu.menuYSize, Menu.menuXSize));
             menuTab.addTab(order.category, panel);
         }
         // if tab is exist, get same category tab

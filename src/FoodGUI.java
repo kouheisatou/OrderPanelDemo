@@ -46,13 +46,21 @@ public class FoodGUI {
         countDownButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                countLabel.setText((Integer.parseInt(countLabel.getText())-1) + "");
+                int newCount = Integer.parseInt(countLabel.getText())-1;
+                if(newCount <= 0){
+                    return;
+                }
+                countLabel.setText(newCount + "");
             }
         });
         countUpButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                countLabel.setText((Integer.parseInt(countLabel.getText())+1) + "");
+                int newCount = Integer.parseInt(countLabel.getText())+1;
+                if(newCount >= 100){
+                    return;
+                }
+                countLabel.setText(newCount + "");
             }
         });
 
@@ -78,13 +86,24 @@ public class FoodGUI {
                     if(clickedIndex < 0 || clickedIndex >= orderList.size()) return;
                     Order clickedOrder = orderList.get(clickedIndex);
 
-                    // set delete menu to popup menu
+                    // right-click popup menu
                     JPopupMenu popupMenu = new JPopupMenu();
+
+                    // set delete menu to popup menu
                     addMenuItemToPopupMenu(popupMenu, "delete", new UnaryOperator<ActionEvent>() {
                         @Override
                         public ActionEvent apply(ActionEvent actionEvent) {
                             orderList.remove(clickedIndex);
                             updateOrderList();
+                            return null;
+                        }
+                    });
+
+                    // set updateCount menu to popup menu
+                    addMenuItemToPopupMenu(popupMenu, "update order count", new UnaryOperator<ActionEvent>() {
+                        @Override
+                        public ActionEvent apply(ActionEvent actionEvent) {
+                            clickedOrder.count = Integer.parseInt(countLabel.getText());
                             return null;
                         }
                     });

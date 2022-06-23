@@ -44,6 +44,10 @@ public class FoodGUI {
             public void mouseClicked(MouseEvent e) {
                 if (SwingUtilities.isLeftMouseButton(e)) {
 
+                    if(orderList.size() == 0){
+                        return;
+                    }
+
                     int clickedIndex = orderJList.getSelectedIndex();
                     Order clickedOrder = orderList.get(clickedIndex);
 

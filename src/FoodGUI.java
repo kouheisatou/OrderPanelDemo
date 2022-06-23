@@ -44,11 +44,10 @@ public class FoodGUI {
             public void mouseClicked(MouseEvent e) {
                 if (SwingUtilities.isLeftMouseButton(e)) {
 
-                    if(orderList.size() == 0){
-                        return;
-                    }
-
+                    // null check
+                    if(orderList.size() == 0) return;
                     int clickedIndex = orderJList.getSelectedIndex();
+                    if(clickedIndex < 0 || clickedIndex >= orderList.size()) return;
                     Order clickedOrder = orderList.get(clickedIndex);
 
                     // set delete menu to popup menu

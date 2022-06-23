@@ -57,7 +57,7 @@ public class FoodGUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int newCount = Integer.parseInt(countLabel.getText())+1;
-                if(newCount >= 100){
+                if(newCount >= 10){
                     return;
                 }
                 countLabel.setText(newCount + "");
@@ -103,8 +103,22 @@ public class FoodGUI {
                     addMenuItemToPopupMenu(popupMenu, "update order count", new UnaryOperator<ActionEvent>() {
                         @Override
                         public ActionEvent apply(ActionEvent actionEvent) {
-                            clickedOrder.count = Integer.parseInt(countLabel.getText());
-                            updateOrderList();
+
+                            // set count menu to countChangePopup menu
+                            JPopupMenu countChangePopupMenu = new JPopupMenu();
+                            for(int i = 1; i < 10; i++){
+                                int temp = i;
+                                addMenuItemToPopupMenu(countChangePopupMenu, i + "", new UnaryOperator<ActionEvent>() {
+                                    @Override
+                                    public ActionEvent apply(ActionEvent actionEvent) {
+                                        clickedOrder.count = temp;
+                                        updateOrderList();
+                                        return null;
+                                    }
+                                });
+                            }
+
+                            countChangePopupMenu.show(orderJList, e.getX(), e.getY());
                             return null;
                         }
                     });

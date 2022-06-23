@@ -62,29 +62,27 @@ public class FoodGUI {
 
     void genOrderBtn(Order order){
         // editing tab panel
-        JTabbedPane tab;
+        JPanel panel;
 
         // if category tab is not exist, gen new tab
         if(!tabList.contains(order.category)){
             tabList.add(order.category);
 
-            tab = new JTabbedPane();
-            tab.setLayout(new GridLayout(menuXSize, menuYSize));
+            panel = new JPanel();
+            panel.setLayout(new GridLayout(menuXSize, menuYSize));
 
-            menuTab.addTab(order.category, tab);
+            menuTab.addTab(order.category, panel);
 
         }
         // if tab is exist, get same category tab
         else{
-            tab = (JTabbedPane) menuTab.getComponent(tabList.indexOf(order.category));
+            panel = (JPanel) menuTab.getComponentAt(tabList.indexOf(order.category));
         }
 
         try{
             ImageIcon icon = new ImageIcon("resource/icon/" + order.iconFileName);
             JButton button = new JButton(order.name + "(¥" + order.price + ")", icon);
-            int size = tab.getComponentCount();
-            System.out.println(size);
-            tab.add(button);
+            panel.add(button);
         }catch (Exception e){
             e.printStackTrace();
         }

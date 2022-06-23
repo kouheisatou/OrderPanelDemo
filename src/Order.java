@@ -15,12 +15,12 @@ public class Order {
 
     @Override
     public String toString() {
-        return "Order{" +
-                "name='" + name + '\'' +
-                ", price=" + price +
-                ", size=" + size +
-                ", category='" + category + '\'' +
-                ", iconFileName='" + iconFileName + '\'' +
-                '}';
+        return name + " ¥" + price + " (" + size + ")";
+    }
+
+    public Order clone(){
+        Order newOrder = new Order(name, price, category, iconFileName);
+        newOrder.size = size;
+        return newOrder;
     }
 }

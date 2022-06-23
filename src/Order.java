@@ -17,7 +17,7 @@ public class Order {
 
     @Override
     public String toString() {
-        return name + " (" + size + ") ¥" + getCurrentPrice() + ") x " + count;
+        return name + " (" + size + ") ¥" + getCurrentPrice() + " x " + count;
     }
 
     public int getCurrentPrice(){

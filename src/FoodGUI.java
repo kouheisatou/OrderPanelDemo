@@ -23,6 +23,8 @@ public class FoodGUI {
     private JLabel countLabel;
     ButtonGroup buttonGroup;
 
+    int sum = 0;
+
     private ArrayList<Order> orderList = new ArrayList<>();
 
     public FoodGUI() {
@@ -40,7 +42,7 @@ public class FoodGUI {
         checkOutButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                checkout();
             }
         });
         countDownButton.addActionListener(new ActionListener() {
@@ -268,7 +270,7 @@ public class FoodGUI {
         countLabel.setText("1");
 
         // update sum
-        int sum = 0;
+        sum = 0;
         for(int i = 0; i < orderList.size(); i++){
             Order order = orderList.get(i);
             sum += (order.getCurrentPrice() * order.count);
@@ -285,5 +287,29 @@ public class FoodGUI {
             }
         });
         popupMenu.add(menuItem);
+    }
+
+    void checkout(){
+        StringBuilder msg = new StringBuilder("Would you like to checkout?");
+        for(int i = 0; i < orderList.size(); i++){
+            msg.append('\n');
+            msg.append(orderList.get(i));
+        }
+        msg.append('\n');
+        msg.append("Total : ");
+        msg.append(sum);
+
+        int resp = JOptionPane.showConfirmDialog(
+                null,
+                msg.toString(),
+                "Checkout Confirmation",
+                JOptionPane.YES_NO_OPTION
+        );
+
+        if(resp == 1){
+            JOptionPane.showMessageDialog(null, "Thank you");
+            orderList.clear();
+            updateOrderList();
+        }
     }
 }

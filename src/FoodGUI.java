@@ -150,7 +150,7 @@ public class FoodGUI {
         // if category tab is not exist, gen new tab
         if(tabIndex == -1){
             panel = new JPanel();
-            panel.setLayout(new GridLayout(Menu.menuYSize, Menu.menuXSize));
+            panel.setLayout(new GridLayout(Menu.menuYSize, 1));
             menuTab.addTab(order.category, panel);
         }
         // if tab is exist, get same category tab

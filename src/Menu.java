@@ -6,9 +6,7 @@ import java.util.ArrayList;
 
 public class Menu {
 
-    public static int menuXSize = 0;
     public static int menuYSize = 0;
-
 
     ArrayList<Order> orders = new ArrayList<Order>();
 
@@ -24,8 +22,7 @@ public class Menu {
 
                 String element[] = line.split(",");
                 if(count == 0){
-                    menuXSize = Integer.parseInt(element[0]);
-                    menuYSize = Integer.parseInt(element[1]);
+                    menuYSize = Integer.parseInt(element[0]);
                 }else{
                     addMenu(element[0], Integer.parseInt(element[1]), element[2], element[3]);
                 }

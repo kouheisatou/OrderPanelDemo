@@ -225,6 +225,7 @@ public class FoodGUI {
     void genOrderBtn(Menu menu){
         // editing tab panel
         JPanel panel;
+        JScrollPane scrollPane;
 
         // judge category tab already exists
         int tabIndex = -1;
@@ -238,11 +239,14 @@ public class FoodGUI {
         if(tabIndex == -1){
             panel = new JPanel();
             panel.setLayout(new GridLayout(MenuList.menuYSize, 1));
-            menuTab.addTab(menu.category, panel);
+            scrollPane = new JScrollPane();
+            scrollPane.setViewportView(panel);
+            menuTab.addTab(menu.category, scrollPane);
         }
         // if tab is exist, get same category tab
         else{
-            panel = (JPanel) menuTab.getComponentAt(tabIndex);
+            scrollPane = (JScrollPane) menuTab.getComponentAt(tabIndex);
+            panel = (JPanel) scrollPane.getViewport().getView();
         }
 
         // add panel to button
@@ -325,7 +329,6 @@ public class FoodGUI {
         JPanel tabRoot = new JPanel();
         BoxLayout g = new BoxLayout(tabRoot, BoxLayout.Y_AXIS);
         tabRoot.setLayout(g);
-        tabRoot.setMaximumSize(new Dimension(1000, 1000));
 
         for(int i = 0; i < menuList.setMenus.size(); i++){
 
@@ -346,8 +349,9 @@ public class FoodGUI {
             tabRoot.add(row);
         }
 
-
-        menuTab.addTab("SetMenu", tabRoot);
+        JScrollPane scrollPane = new JScrollPane(tabRoot);
+        scrollPane.setMaximumSize(new Dimension(-1, 123));
+        menuTab.addTab("SetMenu", scrollPane);
 
     }
 }

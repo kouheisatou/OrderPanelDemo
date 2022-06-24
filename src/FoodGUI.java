@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,21 +22,27 @@ public class FoodGUI {
     private JButton countUpButton;
     private JButton countDownButton;
     private JLabel countLabel;
+    private JScrollPane orderListScrollPanel;
     ButtonGroup buttonGroup;
 
     int sum = 0;
-
-    private ArrayList<Menu> menuList = new ArrayList<>();
+    private ArrayList<Menu> orderList = new ArrayList<>();
+    private MenuList menuList = null;
 
     public FoodGUI() {
 
         // load manu from text
-        MenuList menuList = new MenuList("resource/menu.conf");
+        menuList = new MenuList("resource/menu.conf");
         System.out.println(menuList);
 
         // expand menu button to menuTab
         for(int i = 0; i < menuList.menus.size(); i++){
             genOrderBtn(menuList.menus.get(i));
+        }
+
+        // if set menu exists, add set menu tab
+        if(!menuList.setMenus.isEmpty()){
+            addSetMenuTab();
         }
 
         // set action listeners
@@ -83,10 +90,10 @@ public class FoodGUI {
                 if (SwingUtilities.isLeftMouseButton(e)) {
 
                     // null check
-                    if(FoodGUI.this.menuList.size() == 0) return;
+                    if(FoodGUI.this.orderList.size() == 0) return;
                     int clickedIndex = orderJList.getSelectedIndex();
-                    if(clickedIndex < 0 || clickedIndex >= FoodGUI.this.menuList.size()) return;
-                    Menu clickedMenu = FoodGUI.this.menuList.get(clickedIndex);
+                    if(clickedIndex < 0 || clickedIndex >= FoodGUI.this.orderList.size()) return;
+                    Menu clickedMenu = FoodGUI.this.orderList.get(clickedIndex);
 
                     // right-click popup menu
                     JPopupMenu popupMenu = new JPopupMenu();
@@ -95,7 +102,7 @@ public class FoodGUI {
                     addMenuItemToPopupMenu(popupMenu, "delete", new UnaryOperator<ActionEvent>() {
                         @Override
                         public ActionEvent apply(ActionEvent actionEvent) {
-                            FoodGUI.this.menuList.remove(clickedIndex);
+                            FoodGUI.this.orderList.remove(clickedIndex);
                             updateOrderList();
                             return null;
                         }
@@ -204,7 +211,7 @@ public class FoodGUI {
             menu.count = Integer.parseInt(countLabel.getText());
 
             // add order to internal list
-            menuList.add(menu);
+            orderList.add(menu);
 
             // update view
             updateOrderList();
@@ -242,6 +249,7 @@ public class FoodGUI {
         try{
             ImageIcon icon = new ImageIcon("resource/icon/" + menu.iconFileName);
             JButton button = new JButton("<html><center>" + menu.name + "<br>Small: ¥" + menu.price[0] + "<br>Normal: ¥" + menu.price[1] + "<br>Large: ¥" + menu.price[2] + "</center></html>", icon);
+            button.setMaximumSize(new Dimension());
             panel.add(button);
 
             // add action listener to button
@@ -259,9 +267,9 @@ public class FoodGUI {
     void updateOrderList(){
 
         // update list view
-        String orders[] = new String[this.menuList.size()];
-        for(int i = 0; i < this.menuList.size(); i++){
-            orders[i] = this.menuList.get(i).toString();
+        String orders[] = new String[this.orderList.size()];
+        for(int i = 0; i < this.orderList.size(); i++){
+            orders[i] = this.orderList.get(i).toString();
         }
         orderJList.setListData(orders);
 
@@ -271,8 +279,8 @@ public class FoodGUI {
 
         // update sum
         sum = 0;
-        for(int i = 0; i < menuList.size(); i++){
-            Menu menu = menuList.get(i);
+        for(int i = 0; i < orderList.size(); i++){
+            Menu menu = orderList.get(i);
             sum += (menu.getCurrentPrice() * menu.count);
         }
         totalLabel.setText(sum + "");
@@ -291,9 +299,9 @@ public class FoodGUI {
 
     void checkout(){
         StringBuilder msg = new StringBuilder("Would you like to checkout?");
-        for(int i = 0; i < menuList.size(); i++){
+        for(int i = 0; i < orderList.size(); i++){
             msg.append('\n');
-            msg.append(menuList.get(i));
+            msg.append(orderList.get(i));
         }
         msg.append('\n');
         msg.append("Total : ");
@@ -308,8 +316,38 @@ public class FoodGUI {
 
         if(resp == 1){
             JOptionPane.showMessageDialog(null, "Thank you");
-            menuList.clear();
+            orderList.clear();
             updateOrderList();
         }
+    }
+
+    void addSetMenuTab(){
+        JPanel tabRoot = new JPanel();
+        BoxLayout g = new BoxLayout(tabRoot, BoxLayout.Y_AXIS);
+        tabRoot.setLayout(g);
+        tabRoot.setMaximumSize(new Dimension(1000, 1000));
+
+        for(int i = 0; i < menuList.setMenus.size(); i++){
+
+            JPanel row = new JPanel(new GridLayout());
+            row.setBorder(new LineBorder(Color.GRAY, 2, true));
+
+            for(int j = 0; j < menuList.setMenus.get(i).size(); j++){
+                Menu menu = menuList.setMenus.get(i).get(j);
+                ImageIcon icon = new ImageIcon("resource/icon/" + menu.iconFileName);
+                JLabel label = new JLabel(icon);
+                label.setText("<html><center>" + menu.name + "<br>Small: ¥" + menu.price[0] + "<br>Normal: ¥" + menu.price[1] + "<br>Large: ¥" + menu.price[2] + "</center></html>");
+                row.add(label);
+            }
+
+            JButton addButton = new JButton("add");
+            row.add(addButton);
+
+            tabRoot.add(row);
+        }
+
+
+        menuTab.addTab("SetMenu", tabRoot);
+
     }
 }

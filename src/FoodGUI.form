@@ -48,7 +48,7 @@
           <text value="information"/>
         </properties>
       </component>
-      <scrollpane id="9cb8f">
+      <scrollpane id="9cb8f" binding="orderListScrollPanel">
         <constraints>
           <grid row="4" column="2" row-span="1" col-span="2" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false">
             <minimum-size width="200" height="-1"/>
@@ -74,7 +74,10 @@
         <children>
           <tabbedpane id="be920" binding="menuTab">
             <constraints/>
-            <properties/>
+            <properties>
+              <tabLayoutPolicy value="0"/>
+              <tabPlacement value="1"/>
+            </properties>
             <border type="none"/>
             <children/>
           </tabbedpane>

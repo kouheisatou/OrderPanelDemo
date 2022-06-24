@@ -49,8 +49,7 @@ public class MenuList {
                         addMenu(
                                 element[0],
                                 element[1],
-                                element[2],
-                                new int[]{Integer.parseInt(element[3]), Integer.parseInt(element[4]), Integer.parseInt(element[5])}
+                                new int[]{Integer.parseInt(element[2]), Integer.parseInt(element[3]), Integer.parseInt(element[4])}
                         );
                     }
                     case SetMenuListLoading -> {
@@ -92,10 +91,9 @@ public class MenuList {
     /**
      * add order to menu
      * @param name order name
-     * @param iconFileName icon image file path
      */
-    void addMenu(String name, String category, String iconFileName, int[] price){
-        Menu o = new Menu(name, category, iconFileName, price);
+    void addMenu(String name, String category, int[] price){
+        Menu o = new Menu(name, category, price);
         menus.add(o);
     }
 

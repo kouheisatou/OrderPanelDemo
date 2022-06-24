@@ -5,18 +5,16 @@ public class Menu {
     int[] price;
     Size size;
     String category;
-    String iconFileName;
     ImageIcon icon;
     int count;
 
-    Menu(String name, String category, String iconFileName, int[] price) {
+    Menu(String name, String category, int[] price) {
         this.name = name;
         this.price = price;
         this.category = category;
-        this.iconFileName = iconFileName;
         this.size = Size.Normal;
         this.count = 0;
-        this.icon = new ImageIcon("resource/icon/" + iconFileName);
+        this.icon = new ImageIcon("resource/icon/" + name + ".jpg");
     }
 
     @Override
@@ -38,7 +36,7 @@ public class Menu {
 
     public Menu clone(){
         int[] copiedPrice = {price[0], price[1], price[2]};
-        Menu copiedMenu = new Menu(name, category, iconFileName, copiedPrice);
+        Menu copiedMenu = new Menu(name, category, copiedPrice);
         copiedMenu.size = size;
         return copiedMenu;
     }

@@ -375,7 +375,9 @@ public class FoodGUI {
 
         for(int i = 0; i < menuList.setMenus.size(); i++){
 
-            JPanel row = new JPanel(new GridLayout());
+            JPanel row = new JPanel();
+            BoxLayout b = new BoxLayout(row, BoxLayout.X_AXIS);
+            row.setLayout(b);
             row.setBackground(Color.white);
             row.setBorder(new LineBorder(Color.GRAY, 2, true));
 
@@ -394,23 +396,23 @@ public class FoodGUI {
 
                 @Override
                 public void mousePressed(MouseEvent e) {
-                    row.setBackground(Color.gray);
+                    row.setBorder(new LineBorder(Color.white, 2, true));
                 }
 
                 @Override
                 public void mouseReleased(MouseEvent e) {
-                    row.setBackground(Color.lightGray);
+                    row.setBorder(new LineBorder(Color.red, 2, true));
                     setOrder(setMenuList);
                 }
 
                 @Override
                 public void mouseEntered(MouseEvent e) {
-                    row.setBackground(Color.lightGray);
+                    row.setBorder(new LineBorder(Color.orange, 2, true));
                 }
 
                 @Override
                 public void mouseExited(MouseEvent e) {
-                    row.setBackground(Color.white);
+                    row.setBorder(new LineBorder(Color.lightGray, 2, true));
                 }
             });
 

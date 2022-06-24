@@ -1,18 +1,22 @@
+import javax.swing.*;
+
 public class Menu {
     String name;
     int[] price;
     Size size;
     String category;
     String iconFileName;
+    ImageIcon icon;
     int count;
 
-    Menu(String name, String category, String iconFileName, int[] price){
+    Menu(String name, String category, String iconFileName, int[] price) {
         this.name = name;
         this.price = price;
         this.category = category;
         this.iconFileName = iconFileName;
         this.size = Size.Normal;
         this.count = 0;
+        this.icon = new ImageIcon("resource/icon/" + iconFileName);
     }
 
     @Override

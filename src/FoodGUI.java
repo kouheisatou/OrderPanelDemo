@@ -1,10 +1,7 @@
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.function.UnaryOperator;
@@ -185,41 +182,92 @@ public class FoodGUI {
         frame.setVisible(true);
     }
 
-    void order(Menu food){
+    void setOrder(ArrayList<Menu> foods){
+
+        int total = 0;
+        StringBuilder orderList = new StringBuilder();
+        for(int i = 0; i < foods.size(); i++){
+            Menu order = foods.get(i).clone();
+            order.count = getSelectedCount();
+            order.size = getSelectedSize();
+            orderList.append(order);
+            total += foods.get(i).getCurrentPrice();
+            if(i != foods.size() -1){
+                orderList.append("\n");
+            }
+        }
+
+        int confirmation = JOptionPane.showConfirmDialog(
+                null,
+                orderList + "\nTOTAL ¥" + total*getSelectedCount(),
+                "Order Confirmation",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.INFORMATION_MESSAGE
+        );
+        if(confirmation == 1){
+            return;
+        }
+
+        for(int i = 0; i < foods.size(); i++){
+            order(foods.get(i));
+        }
+
+        // update information
+        informationLabel.setText("Set order received");
+        JOptionPane.showMessageDialog(
+                null,
+                "Order received.\n" + orderList,
+                "Order Confirmation",
+                JOptionPane.INFORMATION_MESSAGE
+        );
+
+        // reset size and count
+        buttonGroup.setSelected(normalRadioButton.getModel(), true);
+        countLabel.setText("1");
+    }
+
+    void singleOrder(Menu food){
 
         int confirmation = JOptionPane.showConfirmDialog(
                 null,
                 "Would you like to order " + food.name + "?",
                 "Order Confirmation",
-                JOptionPane.YES_NO_OPTION
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.INFORMATION_MESSAGE,
+                food.icon
+        );
+        if(confirmation == 1){
+            return;
+        }
+
+        order(food);
+
+        // update information
+        informationLabel.setText("Order for " + food.name + " received");
+        JOptionPane.showMessageDialog(
+                null,
+                "Order for " + food.name + "received.", "Order Confirmation",
+                JOptionPane.INFORMATION_MESSAGE, food.icon
         );
 
-        if(confirmation == 0){
-            Menu menu = food.clone();
+        // reset size and count
+        buttonGroup.setSelected(normalRadioButton.getModel(), true);
+        countLabel.setText("1");
+    }
 
-            // apply size
-            String selectedSize = buttonGroup.getSelection().getActionCommand();
-            if(selectedSize.equals("Large")){
-                menu.size = Size.Large;
-            }else if(selectedSize.equals("Normal")){
-                menu.size = Size.Normal;
-            }else if(selectedSize.equals("Small")){
-                menu.size = Size.Small;
-            }
+    void order(Menu food){
 
-            // apply count
-            menu.count = Integer.parseInt(countLabel.getText());
+        Menu menu = food.clone();
 
-            // add order to internal list
-            orderList.add(menu);
+        // apply count and size
+        menu.count = getSelectedCount();
+        menu.size = getSelectedSize();
 
-            // update view
-            updateOrderList();
+        // add order to internal list
+        orderList.add(menu);
 
-            // update information
-            informationLabel.setText("Order for " + food.name + " received");
-            JOptionPane.showMessageDialog(null, "Order for " + food.name + "received.");
-        }
+        // update view
+        updateOrderList();
     }
 
     void genOrderBtn(Menu menu){
@@ -251,8 +299,7 @@ public class FoodGUI {
 
         // add panel to button
         try{
-            ImageIcon icon = new ImageIcon("resource/icon/" + menu.iconFileName);
-            JButton button = new JButton("<html><center>" + menu.name + "<br>Small: ¥" + menu.price[0] + "<br>Normal: ¥" + menu.price[1] + "<br>Large: ¥" + menu.price[2] + "</center></html>", icon);
+            JButton button = new JButton("<html><center>" + menu.name + "<br>Small: ¥" + menu.price[0] + "<br>Normal: ¥" + menu.price[1] + "<br>Large: ¥" + menu.price[2] + "</center></html>", menu.icon);
             button.setMaximumSize(new Dimension());
             panel.add(button);
 
@@ -260,7 +307,7 @@ public class FoodGUI {
             button.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    order(menu);
+                    singleOrder(menu);
                 }
             });
         }catch (Exception e){
@@ -276,10 +323,6 @@ public class FoodGUI {
             orders[i] = this.orderList.get(i).toString();
         }
         orderJList.setListData(orders);
-
-        // reset size and count
-        buttonGroup.setSelected(normalRadioButton.getModel(), true);
-        countLabel.setText("1");
 
         // update sum
         sum = 0;
@@ -318,7 +361,7 @@ public class FoodGUI {
                 JOptionPane.YES_NO_OPTION
         );
 
-        if(resp == 1){
+        if(resp == 0){
             JOptionPane.showMessageDialog(null, "Thank you");
             orderList.clear();
             updateOrderList();
@@ -333,25 +376,66 @@ public class FoodGUI {
         for(int i = 0; i < menuList.setMenus.size(); i++){
 
             JPanel row = new JPanel(new GridLayout());
+            row.setBackground(Color.white);
             row.setBorder(new LineBorder(Color.GRAY, 2, true));
 
-            for(int j = 0; j < menuList.setMenus.get(i).size(); j++){
-                Menu menu = menuList.setMenus.get(i).get(j);
-                ImageIcon icon = new ImageIcon("resource/icon/" + menu.iconFileName);
-                JLabel label = new JLabel(icon);
+            ArrayList<Menu> setMenuList = menuList.setMenus.get(i);
+
+            for(int j = 0; j < setMenuList.size(); j++){
+                Menu menu = setMenuList.get(j);
+                JLabel label = new JLabel(menu.icon);
                 label.setText("<html><center>" + menu.name + "<br>Small: ¥" + menu.price[0] + "<br>Normal: ¥" + menu.price[1] + "<br>Large: ¥" + menu.price[2] + "</center></html>");
                 row.add(label);
             }
 
-            JButton addButton = new JButton("add");
-            row.add(addButton);
+            row.addMouseListener(new MouseListener() {
+                @Override
+                public void mouseClicked(MouseEvent e) {}
+
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    row.setBackground(Color.gray);
+                }
+
+                @Override
+                public void mouseReleased(MouseEvent e) {
+                    row.setBackground(Color.lightGray);
+                    setOrder(setMenuList);
+                }
+
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    row.setBackground(Color.lightGray);
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    row.setBackground(Color.white);
+                }
+            });
 
             tabRoot.add(row);
         }
 
         JScrollPane scrollPane = new JScrollPane(tabRoot);
-        scrollPane.setMaximumSize(new Dimension(-1, 123));
         menuTab.addTab("SetMenu", scrollPane);
 
+    }
+
+    private Size getSelectedSize(){
+        Size result = null;
+        String selectedSize = buttonGroup.getSelection().getActionCommand();
+        if(selectedSize.equals("Large")){
+            result = Size.Large;
+        }else if(selectedSize.equals("Normal")){
+            result = Size.Normal;
+        }else if(selectedSize.equals("Small")){
+            result = Size.Small;
+        }
+        return result;
+    }
+
+    private int getSelectedCount() {
+        return Integer.parseInt(countLabel.getText());
     }
 }

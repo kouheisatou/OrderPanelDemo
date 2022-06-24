@@ -101,7 +101,7 @@ public class MenuList {
 
     @Override
     public String toString() {
-        return "Menu{" +
+        return "MenuList{" +
                 "\n\tmenus=" + menus +
                 "\n\tsetMenus=" + setMenus +
                 "\n}";

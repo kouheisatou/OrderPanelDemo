@@ -14,7 +14,8 @@ public class Menu {
         this.category = category;
         this.size = Size.Normal;
         this.count = 0;
-        this.icon = new ImageIcon("resource/icon/" + name + ".jpg");
+//        this.icon = new ImageIcon("resource/icon/" + name + ".jpg");
+        this.icon = new ImageIcon(this.getClass().getResource("resource/icon/" + name  + ".jpg"));
     }
 
     @Override

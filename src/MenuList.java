@@ -19,7 +19,7 @@ public class MenuList {
      * @param menuTextPath csv file that contains menu info
      */
     MenuList(String menuTextPath){
-        try(BufferedReader br = new BufferedReader(new FileReader(menuTextPath))){
+        try(BufferedReader br = new BufferedReader(new FileReader(this.getClass().getResource(menuTextPath).getPath()))){
             String line;
             MenuLoadState state = MenuLoadState.Preload;
 
